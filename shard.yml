@@ -1,0 +1,26 @@
+name: rakuten-keiba-deposit
+version: 0.1.0
+
+authors:
+  - kmkj000 <kd1191681@st.kobedenshi.ac.jp>
+
+targets:
+  rakuten-keiba-deposit:
+    main: src/rakuten-keiba-deposit.cr
+
+dependencies:
+  commander:
+    github: mrrooijen/commander
+    version: ~> 0.4.0
+  marionette:
+    github: watzon/marionette
+    branch: master
+  selenium:
+    github: matthewmcgarvey/selenium.cr
+    version: ~> 0.10.0
+  webdrivers:
+    github: matthewmcgarvey/webdrivers.cr
+
+crystal: 1.2.1
+
+license: MIT

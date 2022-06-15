@@ -1,0 +1,26 @@
+version: 2.0
+shards:
+  commander:
+    git: https://github.com/mrrooijen/commander.git
+    version: 0.4.0
+
+  crystar:
+    git: https://github.com/naqvis/crystar.git
+    version: 0.2.0
+
+  habitat:
+    git: https://github.com/luckyframework/habitat.git
+    version: 0.4.7
+
+  marionette:
+    git: https://github.com/watzon/marionette.git
+    version: 0.3.0+git.commit.7076e1a1b25c1f09f0cde746001112fddea16a7f
+
+  selenium:
+    git: https://github.com/matthewmcgarvey/selenium.cr.git
+    version: 0.10.0
+
+  webdrivers:
+    git: https://github.com/matthewmcgarvey/webdrivers.cr.git
+    version: 0.4.0
+
