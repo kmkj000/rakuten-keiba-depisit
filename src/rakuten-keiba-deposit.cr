@@ -6,8 +6,8 @@ module Rakuten::Keiba::Deposit
 
 
   cli = Commander::Command.new do |cmd|
-    cmd.use = "rakuten-keiba-automation"
-    cmd.long = "Automation for rakuten keiba nyukin."
+    cmd.use = "rakuten-keiba-deposit"
+    cmd.long = "Automation for rakuten keiba deposit."
 
 
     cmd.flags.add do |flag|
