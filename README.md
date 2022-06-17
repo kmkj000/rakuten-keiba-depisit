@@ -20,6 +20,7 @@ TODO: Write installation instructions here
     -d, --deposit-amount  Rakuten keiba money of deposit amount. default: 100
     -h, --help            Help for this command.
     -i, --id              Rakuten ID(mail address).
+        --no-payment      [For Debug] No payment flag.
     -p, --password        Rakuten Password.
     -c, --code            Rakuten keiba pincode.
     -v, --version         Show version.
