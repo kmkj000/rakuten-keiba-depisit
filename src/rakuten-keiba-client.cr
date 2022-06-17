@@ -23,6 +23,10 @@ module Rakuten::Keiba::Deposit
       @session = @driver.create_session(capabilities)
     end
 
+    def finalize
+      @driver.stop
+    end
+
     def run
       begin
         @session.navigate_to("https://keiba.rakuten.co.jp/")
@@ -48,8 +52,6 @@ module Rakuten::Keiba::Deposit
 
         payment
 
-        @driver.stop
-
       rescue ex : SiteErrorException
         @session.screenshot("./site_error.png")
         puts ex.message
@@ -67,7 +69,6 @@ module Rakuten::Keiba::Deposit
       @session.find_element(:class, "definedNumber").send_keys(@pin_code)
       @session.find_element(:id, "depositingConfirmButton").click
 
-      pp @session.current_url
       @session.screenshot("./deposit_result.png")
     end
 
