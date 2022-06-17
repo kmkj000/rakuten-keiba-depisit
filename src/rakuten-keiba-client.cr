@@ -14,7 +14,7 @@ module Rakuten::Keiba::Deposit
     @session : Selenium::Session
     @driver : Selenium::Driver
 
-    def initialize(@id : String, @password : String, @pin_code : String, @deposit_amount : Int32)
+    def initialize(@id : String, @password : String, @pin_code : String, @deposit_amount : Int32, @no_payment : Bool)
       webdriver_path = Webdrivers::Chromedriver.install
       @driver = Selenium::Driver.for(:chrome, service: Selenium::Service.chrome(driver_path: webdriver_path) )
 
@@ -67,7 +67,9 @@ module Rakuten::Keiba::Deposit
       @session.find_element(:id, "depositingInputButton").click
 
       @session.find_element(:class, "definedNumber").send_keys(@pin_code)
-      @session.find_element(:id, "depositingConfirmButton").click
+      if !@no_payment
+        @session.find_element(:id, "depositingConfirmButton").click
+      end
 
       @session.screenshot("./deposit_result.png")
     end
