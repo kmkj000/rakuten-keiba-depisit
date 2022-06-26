@@ -83,7 +83,8 @@ module Rakuten::Keiba::Deposit
           exit 1
         end
 
-        PasswordClient.new arguments[0], options.string["salt_path"]
+        password_client = PasswordClient.new arguments[0], options.string["salt_path"]
+        p "Encrypted password: " + password_client.encrypt
       end
     end
 

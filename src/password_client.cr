@@ -1,3 +1,5 @@
+require "base64"
+
 module Rakuten::Keiba::Deposit
   class PasswordClient
     @salt = ""
@@ -18,5 +20,14 @@ module Rakuten::Keiba::Deposit
       salt_file.close
     end
 
+    def encrypt()
+      base64_password = Base64.urlsafe_encode(@unidentified_password,padding = false)
+
+      front_size = Random.rand(base64_password.size - 1)
+      front_password = base64_password[0..front_size]
+      rear_password = base64_password[(front_size + 1)..]
+
+      front_password + @salt + rear_password
+    end
   end
 end
