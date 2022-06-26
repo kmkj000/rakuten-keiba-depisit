@@ -57,6 +57,35 @@ module Rakuten::Keiba::Deposit
       flag.description = "[For Debug] No payment flag."
     end
 
+    cmd.commands.add do |cmd|
+      cmd.use   = "encrypt <password>"
+      cmd.short = "Encrypt input password"
+      cmd.long  = cmd.short
+
+      process_path = Process.executable_path
+      if process_path.is_a?(String)
+        if match_data = process_path.match(/(.+)\/(.*)/)
+          salt_path = match_data[1] + "/salt"
+        end
+      end
+
+      cmd.flags.add do |flag|
+        flag.name        = "salt_path"
+        flag.short       = "-s"
+        flag.long        = "--salt-path"
+        flag.default     = salt_path
+        flag.description = "Exist salt file path or New salt file path"
+      end
+
+      cmd.run do |options, arguments|
+        if arguments.size == 0
+          puts cmd.help
+          exit 1
+        end
+
+        PasswordClient.new arguments[0], options.string["salt_path"]
+      end
+    end
 
     cmd.run do |options, arguments|
       if options.bool["version"]
@@ -87,8 +116,8 @@ module Rakuten::Keiba::Deposit
 
       client = RakutenKeibaClient.new id, password, pin_code, Int32.new(deposit_amount), no_payment
       client.run()
-
     end
+
   end
 
   Commander.run(cli, ARGV)
