@@ -29,6 +29,13 @@ module Rakuten::Keiba::Deposit
       splitted_salt[0] + front_password + splitted_salt[1] + rear_password + splitted_salt[2]
     end
 
+    def decrypt()
+      modify_input = @input.gsub(splitted_salt[0], "")
+      modify_input = modify_input.gsub(splitted_salt[1], "")
+      base64_password = modify_input.gsub(splitted_salt[2], "")
+      Base64.decode_string(base64_password)
+    end
+
     private def create_salt()
       Random::Secure.urlsafe_base64(Random.rand(64..128), padding = false)
     end

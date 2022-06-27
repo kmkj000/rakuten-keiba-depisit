@@ -79,6 +79,30 @@ module Rakuten::Keiba::Deposit
       end
     end
 
+    cmd.commands.add do |cmd|
+      cmd.use   = "decrypt <password>"
+      cmd.short = "(Debug) Decrypt input encrypted password"
+      cmd.long  = cmd.short
+
+      cmd.flags.add do |flag|
+        flag.name        = "salt_path"
+        flag.short       = "-s"
+        flag.long        = "--salt-path"
+        flag.default     = salt_path
+        flag.description = "Exist salt file path or New salt file path"
+      end
+
+      cmd.run do |options, arguments|
+        if arguments.size == 0
+          puts cmd.help
+          exit 1
+        end
+
+        password_client = PasswordClient.new arguments[0], options.string["salt_path"]
+        p "Decrypted password: " + password_client.decrypt()
+      end
+    end
+
     cmd.run do |options, arguments|
       if options.bool["version"]
         puts Rakuten::Keiba::Deposit::VERSION
