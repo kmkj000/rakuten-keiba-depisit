@@ -43,4 +43,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [kmkj000](https://github.com/your-github-user) - creator and maintainer
+- [kmkj000](https://github.com/kmkj000) - creator and maintainer
