@@ -26,16 +26,20 @@ module Rakuten::Keiba::Deposit
       front_password = base64_password[0..front_size]
       rear_password = base64_password[(front_size + 1)..]
 
-      split_size = (@salt.size / 3).to_i
-      front_salt = @salt[0..(split_size - 1)]
-      middle_salt = @salt[split_size..(split_size * 2)]
-      rear_salt = @salt[((split_size * 2) + 1)..]
-
-      front_salt + front_password + middle_salt + rear_password + rear_salt
+      splitted_salt[0] + front_password + splitted_salt[1] + rear_password + splitted_salt[2]
     end
 
-    private def create_salt
-      Random::Secure.urlsafe_base64(Random.rand(6..32), padding = false)
+    private def create_salt()
+      Random::Secure.urlsafe_base64(Random.rand(64..128), padding = false)
+    end
+
+    private def splitted_salt()
+      splitted = Array(String).new
+      split_size = (@salt.size / 3).to_i
+      splitted << @salt[0..(split_size - 1)]
+      splitted << @salt[split_size..(split_size * 2)]
+      splitted << @salt[((split_size * 2) + 1)..]
+      return splitted
     end
   end
 end
