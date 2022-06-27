@@ -4,11 +4,9 @@ require "./*"
 module Rakuten::Keiba::Deposit
   VERSION = "0.1.0"
 
-
   cli = Commander::Command.new do |cmd|
     cmd.use = "rakuten-keiba-deposit"
     cmd.long = "Automation for rakuten keiba deposit."
-
 
     cmd.flags.add do |flag|
       flag.name = "version"
@@ -59,21 +57,14 @@ module Rakuten::Keiba::Deposit
 
     cmd.commands.add do |cmd|
       cmd.use   = "encrypt <password>"
-      cmd.short = "Encrypt input password"
+      cmd.short = "Encrypt input password (Not perfect secure)"
       cmd.long  = cmd.short
-
-      process_path = Process.executable_path
-      if process_path.is_a?(String)
-        if match_data = process_path.match(/(.+)\/(.*)/)
-          salt_path = match_data[1] + "/salt"
-        end
-      end
 
       cmd.flags.add do |flag|
         flag.name        = "salt_path"
         flag.short       = "-s"
         flag.long        = "--salt-path"
-        flag.default     = salt_path
+        flag.default     = salt_path()
         flag.description = "Exist salt file path or New salt file path"
       end
 
@@ -118,7 +109,6 @@ module Rakuten::Keiba::Deposit
       client = RakutenKeibaClient.new id, password, pin_code, Int32.new(deposit_amount), no_payment
       client.run()
     end
-
   end
 
   Commander.run(cli, ARGV)
