@@ -36,6 +36,10 @@ module Rakuten::Keiba::Deposit
       Base64.decode_string(base64_password)
     end
 
+    def encrypted?()
+      @input.starts_with?(splitted_salt[0])
+    end
+
     private def create_salt()
       Random::Secure.urlsafe_base64(Random.rand(64..128), padding = false)
     end

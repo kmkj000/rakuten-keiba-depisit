@@ -117,14 +117,18 @@ module Rakuten::Keiba::Deposit
         end
         deposit_amount = options.int["deposit_amount"]
         no_payment = options.bool["no_payment"]
-
       rescue ex
         puts "#{ex.message}\n#{cmd.help}"
         exit 1
       end
 
-      client = RakutenKeibaClient.new id, password, pin_code, Int32.new(deposit_amount), no_payment
-      client.run()
+      password_client = PasswordClient.new password, options.string["salt_path"]
+      password = password_client.encrypted?() ? password_client.decrypt() : password
+      pincode_client = PasswordClient.new pin_code, options.string["salt_path"]
+      pin_code = pincode_client.encrypted?() ? pincode_client.decrypt() : pin_code
+
+      rakuten_keiba_client = RakutenKeibaClient.new id, password, pin_code, Int32.new(deposit_amount), no_payment
+      rakuten_keiba_client.run()
     end
   end
 
