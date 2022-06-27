@@ -50,6 +50,13 @@ module Rakuten::Keiba::Deposit
       flag.description = "Rakuten keiba money of deposit amount."
     end
 
+    cmd.flags.add do |flag|
+      flag.name        = "no_payment"
+      flag.long        = "--no-payment"
+      flag.default     = false
+      flag.description = "[For Debug] No payment flag."
+    end
+
 
     cmd.run do |options, arguments|
       if options.bool["version"]
@@ -71,13 +78,14 @@ module Rakuten::Keiba::Deposit
           raise Exception.new("Error: pin code is not set")
         end
         deposit_amount = options.int["deposit_amount"]
+        no_payment = options.bool["no_payment"]
 
       rescue ex
         puts "#{ex.message}\n#{cmd.help}"
         exit 1
       end
 
-      client = RakutenKeibaClient.new id, password, pin_code, Int32.new(deposit_amount)
+      client = RakutenKeibaClient.new id, password, pin_code, Int32.new(deposit_amount), no_payment
       client.run()
 
     end
