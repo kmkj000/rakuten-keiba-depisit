@@ -4,11 +4,9 @@ require "./*"
 module Rakuten::Keiba::Deposit
   VERSION = "0.1.0"
 
-
   cli = Commander::Command.new do |cmd|
     cmd.use = "rakuten-keiba-deposit"
     cmd.long = "Automation for rakuten keiba deposit."
-
 
     cmd.flags.add do |flag|
       flag.name = "version"
@@ -57,6 +55,46 @@ module Rakuten::Keiba::Deposit
       flag.description = "[For Debug] No payment flag."
     end
 
+    cmd.flags.add do |flag|
+      flag.name        = "salt_path"
+      flag.short       = "-s"
+      flag.long        = "--salt-path"
+      flag.default     = salt_path()
+      flag.description = "Exist salt file path or New salt file path"
+      flag.persistent  = true
+    end
+
+    cmd.commands.add do |cmd|
+      cmd.use   = "encrypt <password>"
+      cmd.short = "Encrypt input password (Not perfect secure)"
+      cmd.long  = cmd.short
+
+      cmd.run do |options, arguments|
+        if arguments.size == 0
+          puts cmd.help
+          exit 1
+        end
+
+        password_client = PasswordClient.new arguments[0], options.string["salt_path"]
+        p "Encrypted password: " + password_client.encrypt()
+      end
+    end
+
+    cmd.commands.add do |cmd|
+      cmd.use   = "decrypt <encrypted-password>"
+      cmd.short = "[For Debug] Decrypt input encrypted password"
+      cmd.long  = cmd.short
+
+      cmd.run do |options, arguments|
+        if arguments.size == 0
+          puts cmd.help
+          exit 1
+        end
+
+        password_client = PasswordClient.new arguments[0], options.string["salt_path"]
+        p "Decrypted password: " + password_client.decrypt()
+      end
+    end
 
     cmd.run do |options, arguments|
       if options.bool["version"]
@@ -79,15 +117,18 @@ module Rakuten::Keiba::Deposit
         end
         deposit_amount = options.int["deposit_amount"]
         no_payment = options.bool["no_payment"]
-
       rescue ex
         puts "#{ex.message}\n#{cmd.help}"
         exit 1
       end
 
-      client = RakutenKeibaClient.new id, password, pin_code, Int32.new(deposit_amount), no_payment
-      client.run()
+      password_client = PasswordClient.new password, options.string["salt_path"]
+      password = password_client.encrypted?() ? password_client.decrypt() : password
+      pincode_client = PasswordClient.new pin_code, options.string["salt_path"]
+      pin_code = pincode_client.encrypted?() ? pincode_client.decrypt() : pin_code
 
+      rakuten_keiba_client = RakutenKeibaClient.new id, password, pin_code, Int32.new(deposit_amount), no_payment
+      rakuten_keiba_client.run()
     end
   end
 
