@@ -11,10 +11,12 @@ TODO: Write installation instructions here
 
 ```
   Usage:
-    rakuten-keiba-deposit [flags] [arguments]
+    rakuten-keiba-deposit [command] [flags] [arguments]
 
   Commands:
-    help [command]  Help about any command.
+    decrypt <encrypted-password>  [For Debug] Decrypt input encrypted password
+    encrypt <password>  Encrypt input password (Not perfect secure)
+    help [command]      Help about any command.
 
   Flags:
     -d, --deposit-amount  Rakuten keiba money of deposit amount. default: 100
@@ -23,6 +25,7 @@ TODO: Write installation instructions here
         --no-payment      [For Debug] No payment flag.
     -p, --password        Rakuten Password.
     -c, --code            Rakuten keiba pincode.
+    -s, --salt-path       Exist salt file path or New salt file path default: '/home/puti/.cache/crystal/salt'
     -v, --version         Show version.
 ```
 

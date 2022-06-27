@@ -81,8 +81,8 @@ module Rakuten::Keiba::Deposit
     end
 
     cmd.commands.add do |cmd|
-      cmd.use   = "decrypt <password>"
-      cmd.short = "(Debug) Decrypt input encrypted password"
+      cmd.use   = "decrypt <encrypted-password>"
+      cmd.short = "[For Debug] Decrypt input encrypted password"
       cmd.long  = cmd.short
 
       cmd.run do |options, arguments|
